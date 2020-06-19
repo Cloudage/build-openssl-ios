@@ -2,7 +2,20 @@
 
 set -x
 
-TMP_DIR=realpath ../build_openssl
+realpath() {
+  OURPWD=$PWD
+  cd "$(dirname "$1")"
+  LINK=$(readlink "$(basename "$1")")
+  while [ "$LINK" ]; do
+    cd "$(dirname "$LINK")"
+    LINK=$(readlink "$(basename "$1")")
+  done
+  REALPATH="$PWD/$(basename "$1")"
+  cd "$OURPWD"
+  echo "$REALPATH"
+}
+
+TMP_DIR=$(realpath ../build_openssl)
 CROSS_TOP_SIM="`xcode-select --print-path`/Platforms/iPhoneSimulator.platform/Developer"
 CROSS_SDK_SIM="iPhoneSimulator.sdk"
 
@@ -24,7 +37,7 @@ function build_for ()
   export CROSS_SDK="${!CROSS_SDK_ENV}"
   ./Configure $PLATFORM "-arch $ARCH -fembed-bitcode" no-asm no-shared no-hw no-async --prefix=${TMP_DIR}/${ARCH} || exit 1
   # problem of concurrent build; make -j8
-  make && make install_sw || exit 2
+  make -s -j12 && make install_sw || exit 2
   unset CROSS_TOP
   unset CROSS_SDK
 }
