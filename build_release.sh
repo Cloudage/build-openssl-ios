@@ -14,5 +14,3 @@ lipo -create armv7s/lib/libcrypto.a arm64/lib/libcrypto.a x86_64/lib/libcrypto.a
 
 cp -r include/* $RELEASE_DIR/include/
 cd ../
-
-tar cvzf $RELEASE_DIR/../release.tgz -C $RELEASE_DIR .
