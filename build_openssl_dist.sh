@@ -66,9 +66,3 @@ cp -r ${TMP_DIR}/armv7s/include ${TMP_DIR}/
 curl -O https://raw.githubusercontent.com/sinofool/build-openssl-ios/master/patch-include.patch
 #cp ../build-openssl-ios/patch-include.patch .
 patch -p3 ${TMP_DIR}/include/openssl/opensslconf.h < patch-include.patch
-
-DFT_DIST_DIR=${HOME}/Desktop/openssl-ios-dist/
-DIST_DIR=${DIST_DIR:-$DFT_DIST_DIR}
-mkdir -p ${DIST_DIR}
-cp -r ${TMP_DIR}/include ${TMP_DIR}/lib ${DIST_DIR}
-
